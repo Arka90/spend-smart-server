@@ -15,7 +15,11 @@ const incomeRoute = require("./routes/incomeRoute");
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.use(
   bodyParser.urlencoded({
