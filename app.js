@@ -4,6 +4,7 @@ dotenv.config();
 const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const AppError = require("./utils/appError");
 const globalErrorHandeler = require("./controllers/errorController");
@@ -13,6 +14,8 @@ const expenseRoute = require("./routes/expenseRoute");
 const incomeRoute = require("./routes/incomeRoute");
 
 const app = express();
+
+app.use(cors());
 
 app.use(
   bodyParser.urlencoded({
