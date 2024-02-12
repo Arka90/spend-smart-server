@@ -8,7 +8,7 @@ const incomeSchema = new mongoose.Schema({
 
   category: {
     type: String,
-    enum: ["Salary", "Freelancing", "Passive Income", "Ohers"],
+    enum: ["Salary", "Freelancing", "Passive Income", "Others"],
   },
 
   amount: {
