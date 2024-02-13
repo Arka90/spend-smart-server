@@ -98,8 +98,8 @@ exports.getMonthlyIncome = catchAsync(async (req, res, next) => {
   const cuurentUser = req.user;
 
   const currentDate = new Date();
-  const month = currentDate.getMonth() + 1;
-  const year = currentDate.getFullYear();
+  const month = req.query.month || currentDate.getMonth() + 1;
+  const year = req.query.year || currentDate.getFullYear();
 
   const income = await Income.aggregate([
     {
