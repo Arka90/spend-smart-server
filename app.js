@@ -12,6 +12,7 @@ const globalErrorHandeler = require("./controllers/errorController");
 const authRoute = require("./routes/authRoute");
 const expenseRoute = require("./routes/expenseRoute");
 const incomeRoute = require("./routes/incomeRoute");
+const newsRoute = require();
 
 const app = express();
 
