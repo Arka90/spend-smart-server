@@ -3,6 +3,12 @@ const { promisify } = require("util");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/userModel");
+const { StreamChat } = require("stream-chat");
+
+const streamChat = StreamChat.getInstance(
+  process.env.STREAM_API_KEY,
+  process.env.STREAM_PRIVATE_API_KEY
+);
 
 const signToken = (id) => {
   return jwt.sign({ id: id }, process.env.JWT_SECRET, {
@@ -24,6 +30,13 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
+  const resp = await streamChat.upsertUser({
+    id: newUser._id,
+    name: newUser.username,
+  });
+
+  console.log(resp);
+
   createSendToken(newUser, 201, res);
 });
 
@@ -40,6 +53,10 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError("Incorrect Passoward or Email", 401));
   }
+
+  const token = streamChat.createToken(JSON.stringify(user._id));
+
+  console.log("Token for chat app", token);
 
   //3) If everything is OK, send token to client
   createSendToken(user, 200, res);
