@@ -12,6 +12,7 @@ const globalErrorHandeler = require("./controllers/errorController");
 const authRoute = require("./routes/authRoute");
 const expenseRoute = require("./routes/expenseRoute");
 const incomeRoute = require("./routes/incomeRoute");
+const newsRoute = require("./routes/newsRoute");
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 app.use("/api/v1/users", authRoute);
 app.use("/api/v1/expenses", expenseRoute);
 app.use("/api/v1/income", incomeRoute);
+app.use("/api/v1/news", newsRoute);
 // handelling undefined routes
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
