@@ -19,9 +19,12 @@ const signToken = (id) => {
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
+  const chatToken = streamChat.createToken(JSON.stringify(user._id));
+
   res.status(statusCode).json({
     status: "success",
     token,
+    chatToken,
     data: {
       user,
     },
@@ -30,12 +33,10 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
-  const resp = await streamChat.upsertUser({
+  await streamChat.upsertUser({
     id: newUser._id,
     name: newUser.username,
   });
-
-  console.log(resp);
 
   createSendToken(newUser, 201, res);
 });
@@ -54,11 +55,6 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Incorrect Passoward or Email", 401));
   }
 
-  const token = streamChat.createToken(JSON.stringify(user._id));
-
-  console.log("Token for chat app", token);
-
-  //3) If everything is OK, send token to client
   createSendToken(user, 200, res);
 });
 
