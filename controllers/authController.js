@@ -19,7 +19,7 @@ const signToken = (id) => {
 const createSendToken = (user, statusCode, res) => {
   const token = signToken(user._id);
 
-  const chatToken = streamChat.createToken(JSON.stringify(user._id));
+  const chatToken = streamChat.createToken(user._id.toString());
 
   res.status(statusCode).json({
     status: "success",
@@ -33,8 +33,8 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create(req.body);
-  await streamChat.upsertUser({
-    id: newUser._id,
+  const user = await streamChat.upsertUser({
+    id: newUser._id.toString(),
     name: newUser.username,
   });
 
