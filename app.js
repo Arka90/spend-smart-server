@@ -13,6 +13,7 @@ const authRoute = require("./routes/authRoute");
 const expenseRoute = require("./routes/expenseRoute");
 const incomeRoute = require("./routes/incomeRoute");
 const newsRoute = require("./routes/newsRoute");
+const chatRoute = require("./routes/chatRoute");
 
 const app = express();
 
@@ -33,6 +34,8 @@ app.use("/api/v1/users", authRoute);
 app.use("/api/v1/expenses", expenseRoute);
 app.use("/api/v1/income", incomeRoute);
 app.use("/api/v1/news", newsRoute);
+app.use("/api/v1/chats", chatRoute);
+
 // handelling undefined routes
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
